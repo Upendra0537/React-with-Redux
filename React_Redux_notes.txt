@@ -1,0 +1,481 @@
+React and Redux
+-----------------
+React - Java script
+Redux - contains all the packages
+jsx - html like structure which are used in React
+
+node -v to check if node.js is installed or not
+
+npm - node package manager
+npm install -g create-react-app -> this is used to create sample project 
+
+create-react-app jsx -> to create a new project names jsx
+
+Babel - converts any old ES2015 - ES2019  to ES5
+all the ES are standards of Javascripts
+
+JSX Project - comes with following folders 
+src - for source code
+public - for a images and static content
+node_modules - dependencies - no changes
+package.json - dependencies we add
+package-lock.json - dependencies - meta data 
+.gitignore  - list of things to be ignored when uploading the code to Git version control
+
+<project directory> npm start
+cntrl+c to terminate
+
+Making change to the jsx project
+index.js
+-> import the React and ReactDOM libraries
+import React from 'react';
+//getting the code of react to React variable
+-> create a react component
+component is a function/class is to produce HTML(jsx) and handle events(eventhandlers)
+-> Take the react component and show it on the screen
+
+JSX vs HTML
+<button style="background-color: blue"> - HTML
+<button style={{backgroundColor : 'blue'}}> - JSX
+
+<label class = "lable" for="name">Enter Name:</label> - HTML
+<label className = "lable" for="name">Enter Name:</label> - JSX
+
+<button>Click</button> - HTML
+<button>{buttonText}</button> - JSX
+
+JavaScript objects cannot be used as text
+but JavaScript object can be used as an attribute 
+
+check console for any JSX error 
+
+React -  contains the JSX
+ReactDOM - is used to display the JSX
+
+Component Nesting
+Component Resuability
+Component Configuration
+
+For Styles 
+Semantic-ui.com - to get the templates of the css formatting
+https://cdnjs.com/libraries/semantic-ui
+css file to load 
+https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css
+
+For dummy data
+faker.js - for getting the fake data
+https://github.com/marak/Faker.js/
+
+npm install --save faker - to import the faker.js module into the project
+this would update the package.jason with the dependencies
+
+
+Reusable Component
+-------------------
+Create a new .js file 
+Naming standard all caps words without any spaces or "_"
+should have its own import stmts
+
+Nested Components
+----------------------
+Webpack helps to connect two components
+stmt in the main component
+import CommentDetail from "./CommentDetails"
+<CommentDetail/>
+stmt in the sub component
+export default CommentDetail;
+
+one component inside an another we use them as tags
+
+Props System(Properties)
+-----------------------------
+So pass data from the parent component to the child component i.e. to configure the child component
+Parent Component
+<CommentDetail author="SAM" date="Today at 6:00PM" text="Nice blog post!!"/>
+Child Component -> props is the object which contains the data from the parent
+CommentDetail = (props) => {
+ {props.author} // to refer to a variable in a functional component
+this.props.author - to refer to a variable in a class component
+
+console.log(props); - to print the data of each props in the console 
+
+props.childern - to get details of a parent component to a child component
+and we can nest the parent and child components 
+
+defaultProps - to default the values of a Props in the child component if the parent is not passing some values
+
+
+Class Components Vs Functional Components
+-------------------------------------------
+Functional Component - straigth logic
+Class Component - easy organization, State System ( user input), Life Cycle Events(app first starts)
+
+Functional Component
+
+const App = () => 
+	{
+	    return (<div>Hi</div>);
+	};
+
+Life Cycle
+->js file loads to browser
+-> App Component gets created
+-> Call any service
+-> App returns JSX, gets rendered to page on HTML
+...
+...
+...
+<waiting for the service to get the position>
+-> We get the Geolocation.
+
+If we use functional based component we don't have a way to wait the rendering of JSX to HTML with the position. 
+
+
+Class Component
+class should always extend React.Component
+Should call render() method to return JSX - prefer not to have conditional stmts
+Example:
+class App extends React.Component
+	{
+		render(){
+			return<div>Hi</div>
+		};
+	{
+
+Geolocation API 
+https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
+window.geolocaiton.getCurrentPosition(Success[,error[)
+
+State:
+------
+-> can by used only by class components
+-> it is a JS object
+-> updating State would rerender component immediately
+-> State must be initialized when the component is created
+-> State can only be updated using the function 'setState'
+Example:
+this.setState({lat: position.coords.latitude})
+//We should not use the below statement
+//this.state.lat = position.coords.latitude
+-> we dont need to update all the properties of the state
+
+Example:
+ class Clock extends React.Component {
+        state = {time: new Date().toLocaleTimeString()};
+        componentDidMount() {
+            setInterval(() => {
+                this.setState({time: new Date().toLocaleTimeString()})   
+            }, 1000)
+        }
+        
+        render() {
+            return (
+                <div className="time">
+                    The time is: {this.state.time}
+                </div>
+            );
+        }
+    }
+
+
+    // Renders the App component into a div with id 'root'
+    ReactDOM.render(<Clock />, document.querySelector('#root'));
+
+Constructor function
+-> to initialize the State Object
+-> need to have a argument props
+-> need to call Super(props) so that it call the constructor is hte React.Component super class
+Example;
+Constructor(props)
+    {
+        super(props);
+        // this is the only time we do the direct assignment
+        this.state = { lat: null }
+    }
+
+Component Lifecycle - all these methods are called by default at specific life cycle of the component
+-------------------
+-> Constructor() - called one time initial setup
+-> Render() - just to return a JSX
+-> componentDidMount() - Content visible on screen for the first time - data loading - one time call
+-> componentDidUpdate() - called when ever there is an update to the component - rerender
+-> componentWillUnmount() - Removing the component from the screen - cleanup of the component
+
+Call Back Function:
+------------------
+these are triggered at a later point of time when an event happens
+Example:
+<form onSubmit={this.onFormSubmit} className="ui form"> - call back function onFromSubmit is called when an even onSubmit happens
+
+-> Function definition - arrow function 
+onFormSubmit = (event) => {
+        event.preventDefault();
+        console.log(this.state.term)
+// to call props in class component
+        this.props.runSubmit(this.state.term);
+    };
+
+Event Handler
+------------
+call back function which will be called in the future point of time - not paranthesis after the funtion call 
+    
+onChange - User changes text in an input
+onClick - User clicks on something
+onSubmit - User submits on form
+
+event is the property which contains the details on the event handler
+Example:
+onInputChange(event){
+    console.log(event.target.value)
+};
+
+<input type="text" onChange={this.onInputChange}/>
+
+<input type="text" onChange={(event) => console.log(event.target.value)}/>  
+<input type="text" onChange={(e) => console.log(e.target.value)}/>  
+
+Controlled and uncontrolled component
+-> Controlled components are for storing the information in the react and get the value at any instant of time - using state
+-> Uncontrolled components are storing the value in DOM(html) side and once the user inputs , call back happens, then we will get the value.
+
+Child to Parent Communication:
+-----------------------------
+we use props to communicate from parent to child
+we use callback method to communicate from the child to parent.
+Example: we are passing "term" from child to parent
+Parent 
+<SearchBar runSubmit={this.onSearchSubmit}/>
+
+onSearchSubmit = (term) => { }
+
+Child
+this.props.runSubmit(this.state.term);
+
+
+
+API Calls:
+-----------
+React doesn't have the capability to do the networking stuff(like calling API or establishing connections to database), we use Ajax client to do these requests
+Two types of Ajax client which we can use
+Fetch - built into modern browser
+Axios - 3rd Party application - preferred
+npm install axios
+Example:
+axios.get('https://api.unsplash.com/search/photos',{
+           params: { query: term},
+           headers:{
+               Authorization: 'Client-ID 381444ff1714243f570eae9ff9c315d3e55258e40fcdff5e6fedd00ca38bf347'
+           }
+       });
+
+To know if we have a response we can use
+-> .then approach to check for the promise
+Example:
+	}).then(response => {
+         console.log(response.data.results);    
+       });
+-> async approach
+Example:
+onSearchSubmit = async (term) =>  {
+       const response = await axios.get('https://api.unsplash.com/search/photos',{
+           params: { query: term},
+           headers:{
+               Authorization: 'Client-ID 381444ff1714243f570eae9ff9c315d3e55258e40fcdff5e6fedd00ca38bf347'
+           }
+       });
+         console.log(response.data.results);    
+    }
+
+whenever an error occurs around this - modify the function call to be a arrow function 
+
+If we are not using async option, the API would give us a Promise which would contain some notification about the response of the API as API request would take sometime to get a response.
+Maps:
+-----
+Used to create a new list/array from the existing array with some manipulations to each element of an array.
+Example:
+-> Creates an new arrary imagelist by looping throw each "image" of "props.images" array and apply the method 
+-> Always have a key element on the root for unique identifications DOM requires it for rendering
+const imagelist = props.images.map((image) => {return <img key={image.id} src={image.urls.regular}/>});
+
+Decomposition:
+--------------
+Example:
+before:
+alt={this.props.image.description}
+src={this.props.image.urls.regular}
+After:
+const {description,urls} = this.props.image;
+alt={description}
+src={urls.regular}
+
+React Ref:
+------------
+Creating Reference for each Element of a component in DOM
+helpful for getting property of each element being rendered on to the DOM
+
+constructor(props){
+        super(props);
+        this.imageRef = React.createRef();
+    }
+
+<img ref = {this.imageRef} alt={description} src={urls.regular}/>
+
+
+
+REDUX
+-------
+need to install redux and react-redux via npm
+
+it is a library which helps is extracting the state property from the React and isloating it. So as to enable React to handle the User Interface rather than the Data.
+
+      Redux              Insurance                 Define
+Action Creator - Person who drops the form - Function which returns a plain javascript object (Action) i.e. creation of the action
+Action         -  The actual form          - Action has a Type(change) and Payload(data) Property
+Dispatch       - Form receiver             - Takes a Action and makes copies of the Action and share it to different Applications
+Reducer        - Departments               - Function which takes an Action and existing data, do some processing(change the data) and returns it
+State          - Centralized repository    - Central Repository of all the information created by Reducer
+
+Redux Life Cycle:
+We call Action Creator, it returns an Action which is dispatched to the all the reducers. Reducers will take the action and create a new State.
+
+ActionCreator and Action:
+------------------------
+-> creates an action with type and payload.
+Example:
+const createPolicy = (name,amount) => {
+	return(
+		type:'CREATE_POLICY'
+		payload:{
+			name:name
+			amount:amount
+			}
+		);
+}
+we use action creators to do the async API request using middleware
+
+
+Reducer:
+-------
+-> function which takes the previous data array and action, does some logic and returns a new data array
+-> ...listofPolicies give the complete data in the listofPolicies array.
+-> should always return something else undefined will be returned 
+-> reducers are first time invoked when the redux is initializing and it is passed with an undefined values. this values is taken with the action passed, processed to create a  new state. when the reducer is called for the second time. the previous state and an action is taken to create a new state and this cycle continues
+-> reducers should not go out of the function. like an API call or other details which are outside of the previous state
+-> Arrays and objects are mutable i.e. the values or the original structure can change. But Strings and Numbers are not mutable i.e. we cannot change the subparts of them.
+-> Do not mutate the state argument i.e. we need to create a new state rather than changing the existing state.0 
+Example:
+const createPolicy= (listofPolicies,action) => {
+	if(action.type === 'CREATE_POLICY'){
+		return[...listofPolicies,action.payload];
+}
+
+State:
+-------
+-> need the Redux library, we will use
+	- combineReducer - combines all the reducers created
+	- createStore - creates a store object with combineReducers object  
+
+
+const {createStore, combineReducers} = Redux;
+
+const ourDepartments = combineReducers({
+	createPolicy= createPolicy
+});
+
+const store = createStore(ourDepartments); 
+
+Some operations on State
+-> state.filter(element => element!=='hi1') -> state.pop()
+-> [...state,'hi'] -> state.push('hi')
+-> state.map(e1=> e1 === 'h1'? 'bye': e1) -> state[0] = 'hi'
+-> {...state,name:'sam'} -> state.name ='sam' 
+-> state.age:undefined -> delete state.name
+
+Dispatch:
+--------
+-> wires up the reducers and actions.
+
+store.dispatch(createPolicy("Alex",20));
+store.getState();
+
+
+NameExport:
+--------
+-> most of the action creators would be exported via named export.
+export const selectSong = (song) =>{}
+-> and there are imported into other js file as
+import {selectSong} from "../actions";
+
+
+Provider and Connect:
+-------------------
+->Provider is used at the App level to connect to the store and use/pass on the data.
+import {Provider} from "react-redux";
+ReactDOM.render(
+    <Provider store={createStore(reducers)}> <App/> </Provider>
+    ,document.querySelector('#root'));
+
+->Connect is used by the child components which would like to interact with the store data by using the Provider.
+->Connect is also used to dispatch the actioncreators
+import {connect} from "react-redux";
+export default connect(mapStateToProps,{selectSong})(SongList);
+
+Import data from Store to a component:
+-> Use connect to also get the action creators into the component so that they can be used by event handlers to update the state
+-> define mapStateToProps to convert the state to props and return a props by taking state as a input
+-> mapStateToProps will also take a second property of ownProps to access the Props of the class component it is present in.
+Example:
+const mapStateToProps = (state) => {
+    return({songs: state.songs});
+}
+
+const mapStateToProps = (state, ownProps) => {
+return {user: state.users.find(user => user.id === ownProps.userId)
+};
+
+Redux-thunk
+-----------
+-> Middleware provide more functions to handle the REDUX store. 
+-> for handling async action creators we need to use middleware.
+New Redux Life Cycle:
+We call Action Creators which would return Action, which are dispatched to Middleware. Middleware would check if the action is object or a function.
+If object it calls Reducers to create a new state.
+If function it calls the functions with "dispatch" and "getState" functions and upon response, we will dispatch it manually for the Reducer to create a new state.
+Middleware are functions which have the ability to Stop, modify or support actions.
+Example:
+import {createStore, applyMiddleware} from "redux";
+import thunk from 'redux-thunk';
+const store = createStore(reducers,applyMiddleware(thunk));
+//actioncreator which returns functions and calls dispatch manully
+export const fetchPost = () => {
+    return async function(dispatch,getState) {
+        const response = await jsonPlaceholder.get('/posts');
+        dispatch({type:"FETCH_POST",payload:response})
+    }
+}
+
+
+Memorization
+-------------
+Issue: in the Blogs project, we get blogs and we are calling the API to get the users for each blog. there are limited number of users and more number of blogs.
+Solution:
+To reduce the number of User API calls, 
+a) Memorize the data by using lodash 	_.memoize function
+b) Combining the action creators into a single action
+
+lodash is a javascript library which contains many useful functions which can be referred using "_" 	
+
+_.chain is a chain function which take a chain of lodash functions and pass the result of one function as the a first argument to the second function
+Example:
+/console.log(getState().posts)
+//const userIds = _.uniq(_.map(getState().posts,'userId'))
+//console.log(userIds)
+//userIds.forEach(userId=> {dispatch(fetchUser(userId))})
+
+_.chain(getState().posts)
+.map('userId')
+.uniq()
+.forEach(userId => dispatch(fetchUser(userId)))
+.value()
+};
+
